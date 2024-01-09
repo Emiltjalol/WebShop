@@ -1,5 +1,5 @@
-﻿using Microsoft.Identity.Client;
-using WebShop.Models;
+﻿using WebShop.Models;
+
 
 namespace WebShop
 {
@@ -12,9 +12,16 @@ namespace WebShop
             //AddData.AddOrderInfo();
             //AddData.AddFirstProducts();
             //AddData.AddMultipleProducts();
-            AddData.AddFirstCustomers();
-            TheMenu.ShowMenu();
+            //AddData.AddFirstCustomers();
+            var customer = new Customer();
 
+            using (var dbContext = new MyDbContext())
+            {
+                var loginManager = new LoginManager(dbContext);
+                customer = loginManager.Login(dbContext);
+            }
+            TheMenu.ShowMenu(customer);
+            // AddData.AddNewCustomerWithInput();
         }
     }
 }

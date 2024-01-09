@@ -8,11 +8,13 @@ namespace WebShop
     {
         static List<ProductOrder> basket = new List<ProductOrder>();
 
-        public static void ShowMenu()
+        public static void ShowMenu(Customer customer)
         {
+
             bool loop = true;
             while (loop)
             {
+                Console.WriteLine(customer.FirstName);
                 using var db = new MyDbContext();
 
                 var products = db.Products.Include(x => x.Categories).
@@ -216,7 +218,7 @@ namespace WebShop
             var allDeliveryTypes = db.DeliveryTypes.ToList();
             var allDeliveries = db.Deliveries.ToList();
 
-            foreach(var allPaymentType in allPaymentTypes)
+            foreach (var allPaymentType in allPaymentTypes)
             {
                 Console.WriteLine(allPaymentType.Id + " " + allPaymentType.PaymentTypeName);
             }
@@ -225,16 +227,16 @@ namespace WebShop
 
             var selectedPaymentType = allPaymentTypes.FirstOrDefault(x => x.Id == inputPaymentType);
 
-            foreach(var allPayment in allPayments)
+            foreach (var allPayment in allPayments)
             {
                 Console.WriteLine(allPayment.Id + " " + allPayment.PaymentName);
             }
-            
+
             var inputPayment = Helpers.GetGeneralId();
 
             var selectedPayment = allPayments.FirstOrDefault(y => y.Id == inputPaymentType);
 
-            foreach(var allDeliveryType in allDeliveryTypes)
+            foreach (var allDeliveryType in allDeliveryTypes)
             {
                 Console.WriteLine(allDeliveryType.Id + " " + allDeliveryType.DeliveryTypeName + " " + allDeliveryType.DeliveryPrice + ":-");
             }
@@ -243,7 +245,7 @@ namespace WebShop
 
             var selectedDeliveryType = allDeliveryTypes.FirstOrDefault(z => z.Id == inputDeliveryType);
 
-            foreach(var allDelivery in allDeliveries)
+            foreach (var allDelivery in allDeliveries)
             {
                 Console.WriteLine(allDelivery.Id + " " + allDelivery.DeliveryName);
             }
@@ -256,7 +258,7 @@ namespace WebShop
 
             totalAmount += selectedDeliveryType.DeliveryPrice;
 
-            foreach(var product in basket)
+            foreach (var product in basket)
             {
                 totalAmount += product.Price;
             }
@@ -271,7 +273,7 @@ namespace WebShop
             Console.WriteLine($"Total_Cost: {totalAmount}:-");
 
             var finishCheckOut = InputHelpers.GetYesOrNo("Wanna_finish?: ");
-            if(finishCheckOut == true)
+            if (finishCheckOut == true)
             {
                 var productOrder = new FinalOrder()
                 {
